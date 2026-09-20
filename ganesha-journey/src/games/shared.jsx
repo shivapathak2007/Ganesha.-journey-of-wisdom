@@ -1,0 +1,8 @@
+import React,{useState,useEffect,useRef} from 'react';
+import {useGame} from '../managers/ProgressManager';
+import {RotateCcw,ArrowLeft,Trophy,Play} from 'lucide-react';
+export function HUD({items}){return <div className="game-hud">{items.map(([label,value])=><div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>}
+export function Result({score,title,onRestart,onHome,children}){const {t}=useGame();return <div className="result-scrim"><div className="result"><div className="eyebrow">✧ {t('A JOURNEY WELL TRAVELLED','एक सुंदर यात्रा')} ✧</div><Trophy size={42}/><h2>{title||t('Beautifully done','बहुत सुंदर')}</h2><div className="result-score">{score.toLocaleString()}</div><p>{t('Your progress has been saved.','आपकी प्रगति सहेजी गई है।')}</p>{children}<div className="actions"><button className="gold-button" onClick={onRestart}><RotateCcw size={16}/>{t('Play again','फिर खेलें')}</button><button className="ghost-button" onClick={onHome}><ArrowLeft size={16}/>{t('Explore','अन्वेषण')}</button></div></div></div>}
+export function useTimer(running=true){const [seconds,setSeconds]=useState(0);useEffect(()=>{if(!running)return;const i=setInterval(()=>setSeconds(s=>s+1),1000);return()=>clearInterval(i);},[running]);return [seconds,setSeconds];}
+export function formatTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+export function GameStart({title,desc,onStart}){const {t}=useGame();return <div className="result-scrim"><div className="result"><div className="eyebrow">{t('YOUR NEXT ADVENTURE','आपकी अगली यात्रा')}</div><h2>{title}</h2><p>{desc}</p><button className="gold-button" onClick={onStart}><Play size={17}/>{t('Begin','आरंभ करें')}</button></div></div>}
